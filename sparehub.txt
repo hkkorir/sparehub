@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(VehicleSparePartsApp());
+}
+
+class VehicleSparePartsApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Vehicle Spare Parts',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: VehicleSparePartsScreen(),
+    );
+  }
+}
+
+class VehicleSparePartsScreen extends StatefulWidget {
+  @override
+  _VehicleSparePartsScreenState createState() => _VehicleSparePartsScreenState();
+}
+
+class _VehicleSparePartsScreenState extends State<VehicleSparePartsScreen> {
+  List<String> spareParts = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Vehicle Spare Parts'),
+      ),
+      body: ListView.builder(
+        itemCount: spareParts.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(spareParts[index]),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                setState(() {
+                  spareParts.removeAt(index);
+                });
+              },
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          _showAddSparePartDialog();
+        },
+      ),
+    );
+  }
+
+  void _showAddSparePartDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String newSparePart = '';
+
+        return AlertDialog(
+          title: Text('Add Spare Part'),
+          content: TextField(
+            onChanged: (value) {
+              newSparePart = value;
+            },
+          ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Add'),
+              onPressed: () {
+                setState(() {
+                  spareParts.add(newSparePart);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
